@@ -1,17 +1,11 @@
-FROM ubuntu:16.04
+FROM python:2.7.14
 
-RUN apt-get update -y && \                  # TODO why &&
-    apt-get install -y python-pip python-dev
+RUN mkdir /opt/flaskr/
+WORKDIR /opt/flaskr/
 
-# We copy just the requirements.txt first to leverage Docker cache
-COPY ./requirements.txt /app/requirements.txt
+COPY requirements.txt .
+COPY dist/flaskr /opt/flaskr/
 
-WORKDIR /app
+EXPOSE 80
 
-RUN pip install -r requirements.txt
-
-COPY . /app
-
-ENTRYPOINT [ "python" ]  # todo ??
-
-CMD [ "flaskr.py" ]  # todo ??
+CMD [ "./flaskr" ]
